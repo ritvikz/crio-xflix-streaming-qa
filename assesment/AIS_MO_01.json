@@ -130,7 +130,7 @@
         {
           "object_notation": "RESPONSE",
           "operator": "notequal",
-          "expected_value": "0 k"
+          "expected_value": "0"
         }
       ],
       "error_out": "Like a video and verify the like state across tabs",
