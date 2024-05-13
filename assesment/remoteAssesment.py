@@ -1,4 +1,3 @@
-
 from logging import exception
 import requests
 import json
@@ -24,20 +23,23 @@ def get_log_data(log_file_url):
         return None
 
 def construct_log_json(log_text):
+    tmp= open('./chromedriver.log','w+')
+    tmp.write(log_text)
+    tmp.close()
     LOG= {
     "actions":[]
     }
     log_frame=""
     log_object_frame={"COMMAND":None, "RESPONSE":None}
     selector = None
-    for line in open("chromedriver.log"):
-        if('[INFO]' in line and 'COMMAND' in line.upper() ):
+    for line in open("./chromedriver.log"):
+        if('[INFO]' in line and 'COMMAND' in line ):
             if ("COMMAND ExecuteScript" not in str(log_object_frame)):
                 LOG["actions"].append(log_object_frame)
             selector = "COMMAND"
             log_object_frame={"COMMAND":None, "RESPONSE":None}
             log_frame=""
-        elif('[INFO]' in line and 'RESPONSE' in line.upper() ):
+        elif('[INFO]' in line and 'RESPONSE' in line ):
             selector = "RESPONSE"
         
 
@@ -54,9 +56,13 @@ def construct_log_json(log_text):
     json.dump(LOG , open('filtered_logs.json','w+'))
     return LOG
 
-def extract_latest_chromeDriverLogs():
-    with open('chromedriver.log', 'r') as file:
-        log_text = file.read()
+def extract_latest_chromeDriverLogs(ContainerIP):
+    log_file_url = get_session_id(ContainerIP)
+    if(log_file_url is None):
+        raise exception("Unable to reterive log url ")
+    log_text = get_log_data(log_file_url)
+    if(log_text is None):
+        raise exception("Unable to reterive logText")
     return construct_log_json(log_text)
 
 class logProvider():
@@ -116,25 +122,26 @@ def assert_logs(chrome_logs, assesment_instruction_file):
     except Exception as e:
         print("assesment ERROR: invalid assesment file " + str(e))
         return
+    Logs = logProvider(chrome_logs)
 
     for instruction in assesment_instructions:
-        Logs = logProvider(chrome_logs)
         final_output[instruction['description']]="TEST_STATUS_FAILURE"
-        while True:
-            log_item =Logs.get_next_log_statement()
-            if(log_item is None):
-                print("-"*50)
-                print("assesment FAILED: {0}".format(instruction.get('error_out')))
-                print("HINT:\n "+str(instruction.get('hint')))
-                Logs.reset_to_last_successful_node()
-                overall_status['failure']=overall_status['failure']+1
-                break
-            status = batch_validate(log_item,instruction.get('validations'))
-            if(status):
-                Logs.set_success_node_index()
-                overall_status['success']=overall_status['success']+1
-                final_output[instruction['description']]="TEST_STATUS_SUCCESS"
-                break
+        if(instruction.get('is_enabled')):
+            while True:
+                log_item =Logs.get_next_log_statement()
+                if(log_item is None):
+                    print("-"*50)
+                    print("assesment FAILED: {0}".format(instruction.get('error_out')))
+                    print("HINT:\n "+str(instruction.get('hint')))
+                    Logs.reset_to_last_successful_node()
+                    overall_status['failure']=overall_status['failure']+1
+                    break
+                status = batch_validate(log_item,instruction.get('validations'))
+                if(status):
+                    Logs.set_success_node_index()
+                    overall_status['success']=overall_status['success']+1
+                    final_output[instruction['description']]="TEST_STATUS_SUCCESS"
+                    break
         else:
             final_output[instruction['description']]="TEST_STATUS_SKIPPED"
     print("*"*100)
@@ -145,8 +152,9 @@ def assert_logs(chrome_logs, assesment_instruction_file):
 
 #USAGE: python assesment/remoteAssesment.py localhost   assesment/AIS_MO_01.json
 if __name__ == "__main__":
-    assessment_instruction_file = sys.argv[1]
-    filtered_logs = extract_latest_chromeDriverLogs()
+    IP = sys.argv[1]
+    assessment_instruction_file = sys.argv[2]
+    print("Container IP: {0}".format(IP))
+    filtered_logs = extract_latest_chromeDriverLogs(IP)
     print("Logs saved to: filtered_logs.json")
     assert_logs(filtered_logs , assessment_instruction_file)
-

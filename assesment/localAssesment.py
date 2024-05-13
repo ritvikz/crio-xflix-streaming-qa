@@ -1,4 +1,3 @@
-
 import json
 import sys
 
@@ -94,25 +93,26 @@ def assert_logs(chrome_logs, assesment_instruction_file):
     except Exception as e:
         print("assesment ERROR: invalid assesment file " + str(e))
         return
+    Logs = logProvider(chrome_logs)
 
     for instruction in assesment_instructions:
-        Logs = logProvider(chrome_logs)
         final_output[instruction['description']]="TEST_STATUS_FAILURE"
-        while True:
-            log_item =Logs.get_next_log_statement()
-            if(log_item is None):
-                print("-"*50)
-                print("assesment FAILED: {0}".format(instruction.get('error_out')))
-                print("HINT:\n "+str(instruction.get('hint')))
-                Logs.reset_to_last_successful_node()
-                overall_status['failure']=overall_status['failure']+1
-                break
-            status = batch_validate(log_item,instruction.get('validations'))
-            if(status):
-                Logs.set_success_node_index()
-                overall_status['success']=overall_status['success']+1
-                final_output[instruction['description']]="TEST_STATUS_SUCCESS"
-                break
+        if(instruction.get('is_enabled')):
+            while True:
+                log_item =Logs.get_next_log_statement()
+                if(log_item is None):
+                    print("-"*50)
+                    print("assesment FAILED: {0}".format(instruction.get('error_out')))
+                    print("HINT:\n "+str(instruction.get('hint')))
+                    Logs.reset_to_last_successful_node()
+                    overall_status['failure']=overall_status['failure']+1
+                    break
+                status = batch_validate(log_item,instruction.get('validations'))
+                if(status):
+                    Logs.set_success_node_index()
+                    overall_status['success']=overall_status['success']+1
+                    final_output[instruction['description']]="TEST_STATUS_SUCCESS"
+                    break
         else:
             final_output[instruction['description']]="TEST_STATUS_SKIPPED"
     print("*"*100)
@@ -125,4 +125,3 @@ if __name__ == "__main__":
 
     filtered_logs_json = json.load(open('filtered_logs.json','r'))
     assert_logs(filtered_logs_json , assessment_instruction_file)
-

@@ -38,4 +38,3 @@ if __name__ == "__main__":
     
     chromedriverlog_path = sys.argv[1] 
     chrome_logs = construct_log_json(chromedriverlog_path)
-
