@@ -15,6 +15,7 @@
         }
       ],
       "error_out": "Navigate to the XFlix website",
+      "is_enabled": true,
       "hint": "TestCase 1: Ensure that you are on the XFlix homepage with the correct URL."
     },
     {
@@ -32,6 +33,7 @@
         }
       ],
       "error_out": "Get the URL of the page and verify",
+      "is_enabled": true,
       "hint": "TestCase 1: Ensure that you check the url of the page contains xflix"
     },
     {
@@ -49,6 +51,7 @@
         }
       ],
       "error_out": "Search for the keyword 'frameworks' and verify the search results",
+      "is_enabled": true,
       "hint": "TestCase 2: Ensure that you search for 'frameworks' and verify the search results contain the keyword."
     },
     {
@@ -66,6 +69,7 @@
         }
       ],
       "error_out": "Search for selenium and verify no results are found",
+      "is_enabled": true,
       "hint": "TestCase 2: Ensure that you search for 'selenium' and verify that no results are found."
     },
     {
@@ -83,6 +87,7 @@
         }
       ],
       "error_out": "Sort the search results by 'View Count' and verify the order",
+      "is_enabled": true,
       "hint": "TestCase 3: Ensure that you sort the search results by 'View Count' and verify the order is different from the default."
     },
     {
@@ -100,6 +105,7 @@
         }
       ],
       "error_out": "Test the video upload functionality",
+      "is_enabled": true,
       "hint": "TestCase 4: Ensure that you fill out all the required fields and verify that the video is uploaded successfully."
     },
     {
@@ -117,6 +123,7 @@
         }
       ],
       "error_out": "Like a video and verify the like state across tabs",
+      "is_enabled": true,
       "hint": "TestCase 5: Ensure that you like a video, open a new tab, and verify that the like state is preserved."
     },
     {
@@ -134,6 +141,7 @@
         }
       ],
       "error_out": "Like a video and verify the like state across tabs",
+      "is_enabled": true,
       "hint": "TestCase 5: Ensure that you like a video, open a new tab, and verify that the like state is preserved."
     }
   ]
