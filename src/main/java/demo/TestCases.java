@@ -19,10 +19,6 @@ public class TestCases {
 
     public TestCases() throws MalformedURLException {
         System.out.println("Constructor: TestCases");
-    }
-
-    public void TestCases() throws MalformedURLException {
-        System.out.println("Constructor: TestCases");
         WebDriverManager.chromedriver().timeout(120).setup();
         ChromeOptions options = new ChromeOptions();
         LoggingPreferences logs = new LoggingPreferences();
