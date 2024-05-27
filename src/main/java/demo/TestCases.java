@@ -2,8 +2,6 @@ package demo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -38,7 +36,7 @@ public class TestCases {
 
         // Set browser to maximize and wait
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(120));
+        wait = new WebDriverWait(driver, 30);
     }
 
     public void endTest() {
