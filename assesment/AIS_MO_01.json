@@ -76,9 +76,9 @@
       "description": "TestCase 3: Verify the Functionality of Filters",
       "validations": [
         {
-          "object_notation": "RESPONSE",
+          "object_notation": "COMMAND",
           "operator": "contains",
-          "expected_value": "PASS"
+          "expected_value": "FindChildElements"
         },
         {
           "object_notation": "COMMAND",

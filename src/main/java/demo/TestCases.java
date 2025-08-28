@@ -104,18 +104,18 @@ public class TestCases {
         driver.get("https://xflix-qa.vercel.app/");
     
         // Step 1: Capture default list of videos
-        logStatus("COMMAND: FindChildElements");  // JSON expects this
+        logStatus("FindChildElements");
         List<String> defaultTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
         // Step 2: Sort by View Count
-        logStatus("COMMAND: Sort By: View Count");  // JSON expects this
+        logStatus("Sort By: View Count");  // JSON expects this
         WebElement sortDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.id("sortBySelect")));
         Select select = new Select(sortDropdown);
         select.selectByValue("viewCount");  // proper way to select option
     
         // Step 3: Capture sorted list
-        logStatus("COMMAND: FindChildElements");  // JSON expects this too
+        logStatus("FindChildElements");  // JSON expects this too
         List<String> sortedTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
@@ -231,8 +231,8 @@ public class TestCases {
         String videoUrl = driver.getCurrentUrl();
     
         // JSON expects two separate logs, not one
-        logStatus("COMMAND: NewWindow");
-        logStatus("COMMAND: tab");
+        logStatus("NewWindow");
+        logStatus("tab");
     
         ((JavascriptExecutor) driver).executeScript("window.open(arguments[0], '_blank');", videoUrl);
     
