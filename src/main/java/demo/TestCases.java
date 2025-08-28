@@ -103,23 +103,26 @@ public class TestCases {
         logStatus("Start Test case: testCase03");
         driver.get("https://xflix-qa.vercel.app/");
     
-        // Step 1: Capture default list of videos
-        logStatus("FindChildElements");
+        // Before sorting
+        logStatus("COMMAND: FindChildElements");
         List<String> defaultTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
-        // Step 2: Sort by View Count
-        logStatus("Sort By: View Count");  // JSON expects this
+        // Sort by View Count
         WebElement sortDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.id("sortBySelect")));
         Select select = new Select(sortDropdown);
-        select.selectByValue("viewCount");  // proper way to select option
+        select.selectByValue("viewCount");
     
-        // Step 3: Capture sorted list
-        logStatus("FindChildElements");  // JSON expects this too
+        // Log the actual selected option text (matches JSON expectation)
+        String selectedOption = select.getFirstSelectedOption().getText();
+        logStatus("COMMAND: " + selectedOption);
+    
+        // After sorting
+        logStatus("COMMAND: FindChildElements");
         List<String> sortedTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
-        // Step 4: Validate order change
+        // Validation
         if (!defaultTitles.equals(sortedTitles)) {
             logStatus("PASS: Video order changed after applying View Count filter.");
         } else {
@@ -128,6 +131,7 @@ public class TestCases {
     
         logStatus("End Test case: testCase03");
     }
+    
     
     
     
