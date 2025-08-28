@@ -25,7 +25,7 @@ public class TestCases {
     private static RemoteWebDriver driver;
     private WebDriverWait wait;
 
-    // simple logger method123
+    // simple logger method
     private void logStatus(String message) {
         System.out.println(message);
     }
