@@ -103,7 +103,7 @@ public class TestCases {
         logStatus("Start Test case: testCase03");
         driver.get("https://xflix-qa.vercel.app/");
     
-        // Before sorting
+        // Before sorting122
         logStatus("COMMAND: FindChildElements");
         List<String> defaultTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
