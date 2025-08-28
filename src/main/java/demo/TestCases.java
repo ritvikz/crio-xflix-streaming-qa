@@ -115,10 +115,10 @@ public class TestCases {
     
         // Log the actual selected option text (matches JSON expectation)
         String selectedOption = select.getFirstSelectedOption().getText();
-        logStatus("COMMAND: " + selectedOption);
+        logStatus(selectedOption);
     
         // After sorting
-        logStatus("COMMAND: FindChildElements");
+        logStatus("FindChildElements");
         List<String> sortedTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     

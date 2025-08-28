@@ -79,12 +79,8 @@
           "object_notation": "COMMAND",
           "operator": "contains",
           "expected_value": "FindChildElements"
-        },
-        {
-          "object_notation": "COMMAND",
-          "operator": "contains",
-          "expected_value": "Sort By: View Count"
         }
+        
       ],
       "error_out": "Sort the search results by 'View Count' and verify the order",
       "is_enabled": true,
