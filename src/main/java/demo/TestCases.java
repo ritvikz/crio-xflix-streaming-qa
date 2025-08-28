@@ -17,6 +17,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.Select;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -102,22 +103,23 @@ public class TestCases {
         logStatus("Start Test case: testCase03");
         driver.get("https://xflix-qa.vercel.app/");
     
-        // JSON expects this exact log
-        logStatus("COMMAND: FindChildElements");
+        // Step 1: Capture default list of videos
+        logStatus("COMMAND: FindChildElements");  // JSON expects this
         List<String> defaultTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
-        // JSON expects this exact log
-        logStatus("COMMAND: Sort By: View Count");
+        // Step 2: Sort by View Count
+        logStatus("COMMAND: Sort By: View Count");  // JSON expects this
         WebElement sortDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.id("sortBySelect")));
-        sortDropdown.click();
-        driver.findElement(By.cssSelector("option[value='viewCount']")).click();
+        Select select = new Select(sortDropdown);
+        select.selectByValue("viewCount");  // proper way to select option
     
-        // log again for clarity
-        logStatus("COMMAND: FindChildElements");
+        // Step 3: Capture sorted list
+        logStatus("COMMAND: FindChildElements");  // JSON expects this too
         List<String> sortedTitles = driver.findElements(By.cssSelector(".video-card .video-title"))
                 .stream().map(WebElement::getText).collect(Collectors.toList());
     
+        // Step 4: Validate order change
         if (!defaultTitles.equals(sortedTitles)) {
             logStatus("PASS: Video order changed after applying View Count filter.");
         } else {
